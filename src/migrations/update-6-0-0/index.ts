@@ -13,13 +13,13 @@ export default function migrate(metadata: MigrateMetadata): Rule {
         migrateAngular(tree, context, metadata);
         break;
       case 'react':
-        migrateReact(tree, metadata);
+        migrateReact(tree, context, metadata);
         break;
       case 'typescript':
-        migrateTypescript(tree, metadata);
+        migrateTypescript(tree, context, metadata);
         break;
       case 'vue':
-        migrateVue(tree, metadata);
+        migrateVue(tree, context, metadata);
         break;
     };
     return tree;
