@@ -17,6 +17,7 @@
     "skipLibCheck": true,
     "sourceMap": true,
     "strictNullChecks": true,
+    "esModuleInterop": true,
     "target": "es6",
     "types": ["jasmine", "node"]
   },
