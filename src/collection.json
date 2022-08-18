@@ -1,10 +1,10 @@
 {
   "$schema": "../node_modules/@angular-devkit/schematics/collection-schema.json",
   "schematics": {
-    "ionic-codemod": {
+    "migrate": {
       "description": "A blank schematic.",
-      "factory": "./ionic-codemod/index#ionicCodemod",
-      "schema": "./ionic-codemod/schema.json"
+      "factory": "./migrate/index#migrate",
+      "schema": "./migrate/schema.json"
     }
   }
 }

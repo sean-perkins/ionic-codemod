@@ -5,15 +5,6 @@
   "type": "object",
   "description": "Update your Ionic project",
   "properties": {
-    "from": {
-      "type": "string",
-      "description": "The current version of the project",
-      "x-prompt": "from:",
-      "$default": {
-        "$source": "argv",
-        "index": 0
-      }
-    },
     "to": {
       "type": "string",
       "description": "The version to update to",
