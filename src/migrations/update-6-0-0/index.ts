@@ -22,7 +22,9 @@ export default function migrate(metadata: MigrateMetadata): Rule {
         migrateVue(tree, context, metadata);
         break;
       default:
-        context.logger.warn('v6.0.0 migrations not found for framework: ' + metadata.framework);
+        context.logger.warn(
+          'v6.0.0 migrations not found for framework: ' + metadata.framework
+        );
         break;
     }
     return tree;

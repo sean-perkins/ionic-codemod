@@ -75,7 +75,7 @@ export const migrateSetupConfig = (tree: Tree, context: SchematicContext) => {
                     return `${node
                       .getFullText()
                       .replace(
-                        'IonicModule',
+                        'IonicModule.forRoot()',
                         `IonicModule.forRoot(${setupConfigArguments})`
                       )}`;
                   }
