@@ -41,11 +41,11 @@ import {
   IonTitle,
   IonToolbar,
   IonModal,
-} from "@ionic/vue";
-import { defineComponent } from "vue";
+} from '@ionic/vue';
+import { defineComponent } from 'vue';
 
 export default defineComponent({
-  name: "HomePage",
+  name: 'HomePage',
   components: {
     IonContent,
     IonHeader,
@@ -56,7 +56,7 @@ export default defineComponent({
   },
   setup() {
     const onModalWillPresentHandler = () => {
-      console.log("Modal will present");
+      console.log('Modal will present');
     };
 
     return {

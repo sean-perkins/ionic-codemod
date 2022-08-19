@@ -1,7 +1,6 @@
 import { tsquery } from '@phenomnomnominal/tsquery';
 import ts from 'typescript';
 
-
 /**
  * Creates an import declaration for a TSX file.
  * @param importPath The path to import from (either a relative path or a package name).
@@ -9,9 +8,18 @@ import ts from 'typescript';
  * @param sourceText The source text of the file.
  * @returns The import declaration as a string.
  */
-export const createTsxImportStatement = (importPath: string, namedImports: ts.NamedImports, sourceText = '') => {
-  return createImportStatement(importPath, namedImports, sourceText, ts.ScriptKind.TSX);
-}
+export const createTsxImportStatement = (
+  importPath: string,
+  namedImports: ts.NamedImports,
+  sourceText = ''
+) => {
+  return createImportStatement(
+    importPath,
+    namedImports,
+    sourceText,
+    ts.ScriptKind.TSX
+  );
+};
 
 /**
  * Creates an import declaration for a TS file.
@@ -21,42 +29,60 @@ export const createTsxImportStatement = (importPath: string, namedImports: ts.Na
  * @param scriptKind The script kind of the file.
  * @returns The import declaration as a string.
  */
-export const createImportStatement = (importPath: string, namedImports: ts.NamedImports, sourceText = '', scriptKind = ts.ScriptKind.TS) => {
+export const createImportStatement = (
+  importPath: string,
+  namedImports: ts.NamedImports,
+  sourceText = '',
+  scriptKind = ts.ScriptKind.TS
+) => {
   const newImportDeclaration = ts.factory.createImportDeclaration(
     undefined,
     undefined,
-    ts.factory.createImportClause(
-      false,
-      undefined,
-      namedImports
-    ),
+    ts.factory.createImportClause(false, undefined, namedImports),
     ts.factory.createStringLiteral(importPath),
     undefined
   );
 
-  const resultFile = ts.createSourceFile('update.tsx', sourceText, ts.ScriptTarget.Latest, true, scriptKind);
+  const resultFile = ts.createSourceFile(
+    'update.tsx',
+    sourceText,
+    ts.ScriptTarget.Latest,
+    true,
+    scriptKind
+  );
   const printer = ts.createPrinter({ newLine: ts.NewLineKind.LineFeed });
 
-  const result = printer.printNode(ts.EmitHint.Unspecified, newImportDeclaration, resultFile);
+  const result = printer.printNode(
+    ts.EmitHint.Unspecified,
+    newImportDeclaration,
+    resultFile
+  );
 
   return result;
-}
+};
 
 /**
  * Removes the specified import specifiers from the import declaration (one or more named imports).
  * @param importDeclaration The import declaration to remove the import specifiers from.
  * @param identifiers The identifiers to remove from the import declaration.
  */
-export const removeImportSpecifiers = (importDeclaration: ts.ImportDeclaration, ...identifiers: string[]) => {
-  const res = tsquery.replace(importDeclaration.getFullText(), 'ImportSpecifier', node => {
-    const importSpecifier = node as ts.ImportSpecifier;
-    const importSpecifierName = importSpecifier.name.getText();
+export const removeImportSpecifiers = (
+  importDeclaration: ts.ImportDeclaration,
+  ...identifiers: string[]
+) => {
+  const res = tsquery.replace(
+    importDeclaration.getFullText(),
+    'ImportSpecifier',
+    (node) => {
+      const importSpecifier = node as ts.ImportSpecifier;
+      const importSpecifierName = importSpecifier.name.getText();
 
-    if (identifiers.includes(importSpecifierName)) {
-      return '';
+      if (identifiers.includes(importSpecifierName)) {
+        return '';
+      }
+      return node.getFullText();
     }
-    return node.getFullText();
-  });
+  );
   // TODO - Remove the import declaration if there are no import specifiers left.
   return res;
-}
+};

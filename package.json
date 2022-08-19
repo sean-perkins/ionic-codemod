@@ -5,7 +5,8 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "watch": "tsc -p tsconfig.json --watch",
-    "test": "jest"
+    "test": "jest",
+    "prettier": "prettier --write ."
   },
   "keywords": [
     "schematics"
@@ -31,6 +32,7 @@
     "jasmine": "^4.0.0",
     "jest": "^28.1.3",
     "pacote": "^13.6.1",
+    "prettier": "2.7.1",
     "ts-jest": "^28.0.8",
     "ts-node": "^10.9.1"
   }

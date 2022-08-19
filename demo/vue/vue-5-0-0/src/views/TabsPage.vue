@@ -5,11 +5,11 @@
 </template>
 
 <script lang="ts">
-import { IonPage, IonTabs, IonTabBar } from "@ionic/vue";
-import { defineComponent } from "vue";
+import { IonPage, IonTabs, IonTabBar } from '@ionic/vue';
+import { defineComponent } from 'vue';
 
 export default defineComponent({
-  name: "HomePage",
+  name: 'HomePage',
   components: {
     IonPage,
     IonTabs,

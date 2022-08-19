@@ -41,11 +41,11 @@ import {
   IonToolbar,
   IonModal,
   IonPopover,
-} from "@ionic/vue";
-import { defineComponent } from "vue";
+} from '@ionic/vue';
+import { defineComponent } from 'vue';
 
 export default defineComponent({
-  name: "HomePage",
+  name: 'HomePage',
   components: {
     IonContent,
     IonHeader,
@@ -57,11 +57,11 @@ export default defineComponent({
   },
   setup() {
     const onWillPresentHandler = () => {
-      console.log("Overlay will present");
+      console.log('Overlay will present');
     };
 
     const onDidDismissHandler = () => {
-      console.log("Overlay did dismiss");
+      console.log('Overlay did dismiss');
     };
 
     return {

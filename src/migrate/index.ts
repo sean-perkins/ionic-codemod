@@ -1,4 +1,9 @@
-import { chain, Rule, SchematicContext, Tree } from '@angular-devkit/schematics';
+import {
+  chain,
+  Rule,
+  SchematicContext,
+  Tree,
+} from '@angular-devkit/schematics';
 // import { tsquery } from '@phenomnomnominal/tsquery';
 // import { Framework, JsonSchemaForNpmPackageJsonFiles } from '../types';
 
@@ -90,7 +95,7 @@ interface Options {
 //            * Checking for the following:
 //            * import { setupConfig } from '@ionic/core';
 //            * setupConfig({ ...});
-//            * 
+//            *
 //            * Migrating to:
 //            * import { IonicModule } from '@ionic/angular';
 //            * IonicModule.forRoot({ ...});
@@ -127,7 +132,6 @@ interface Options {
 //         break;
 //     }
 
-
 //     return tree;
 //   }
 // }
@@ -136,7 +140,6 @@ interface Options {
 // per file.
 export function migrate({ to }: Options): Rule {
   return (tree: Tree, context: SchematicContext) => {
-
     const migrations = [];
 
     const packageJson = readPackageJson(tree);
@@ -145,9 +148,7 @@ export function migrate({ to }: Options): Rule {
     context.logger.info('Running migrations for framework: ' + framework);
 
     if (to === '6.0.0') {
-      migrations.push(
-        migrate_6_0_0({ framework, packageJson })
-      );
+      migrations.push(migrate_6_0_0({ framework, packageJson }));
     }
 
     // const rule = chain([
@@ -159,5 +160,3 @@ export function migrate({ to }: Options): Rule {
     return rule(tree, context);
   };
 }
-
-

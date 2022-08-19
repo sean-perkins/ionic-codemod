@@ -1,5 +1,5 @@
-import { Rule, SchematicContext, Tree } from "@angular-devkit/schematics";
-import { MigrateMetadata } from "../../migrate/migrate-metadata";
+import { Rule, SchematicContext, Tree } from '@angular-devkit/schematics';
+import { MigrateMetadata } from '../../migrate/migrate-metadata';
 
 import migrateAngular from './angular';
 import migrateReact from './react';
@@ -21,7 +21,7 @@ export default function migrate(metadata: MigrateMetadata): Rule {
       case 'vue':
         migrateVue(tree, context, metadata);
         break;
-    };
+    }
     return tree;
-  }
+  };
 }
