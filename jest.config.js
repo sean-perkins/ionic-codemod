@@ -1,6 +1,4 @@
-import type { Config } from '@jest/types';
-
-const config: Config.InitialOptions = {
+module.exports = {
   verbose: true,
   clearMocks: true,
   testEnvironment: 'node',
@@ -9,5 +7,3 @@ const config: Config.InitialOptions = {
   },
   testMatch: ['<rootDir>/src/**/*.spec.ts'],
 };
-
-export default config;
