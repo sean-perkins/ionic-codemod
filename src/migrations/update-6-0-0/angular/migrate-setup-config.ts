@@ -1,11 +1,6 @@
 import { SchematicContext, Tree } from '@angular-devkit/schematics';
 import { tsquery } from '@phenomnomnominal/tsquery';
-import {
-  ArrayLiteralExpression,
-  ExpressionStatement,
-  ImportDeclaration,
-  ObjectLiteralExpression,
-} from 'typescript';
+import ts from 'typescript';
 
 const SETUP_CONFIG_AST_QUERY =
   'ExpressionStatement > CallExpression:has(Identifier[name="setupConfig"])';
@@ -26,18 +21,19 @@ export const migrateSetupConfig = (tree: Tree, context: SchematicContext) => {
       if (fileContent) {
         const sourceFile = tsquery.ast(fileContent);
         // We query the setupConfig() expression statement to see if it exists.
-        const setupConfigExpression = tsquery.query<ExpressionStatement>(
+        const setupConfigExpression = tsquery.query<ts.ExpressionStatement>(
           sourceFile,
           SETUP_CONFIG_AST_QUERY,
           { visitAllChildren: true }
         )[0];
         if (setupConfigExpression) {
           // Then we query the import statement to make sure it is imported from @ionic/core.
-          const setupConfigImportDeclaration = tsquery.query<ImportDeclaration>(
-            sourceFile,
-            IMPORTS_SETUP_CONFIG_AST_QUERY,
-            { visitAllChildren: true }
-          )[0];
+          const setupConfigImportDeclaration =
+            tsquery.query<ts.ImportDeclaration>(
+              sourceFile,
+              IMPORTS_SETUP_CONFIG_AST_QUERY,
+              { visitAllChildren: true }
+            )[0];
           if (
             setupConfigImportDeclaration.moduleSpecifier
               .getText()
@@ -48,7 +44,7 @@ export const migrateSetupConfig = (tree: Tree, context: SchematicContext) => {
             );
 
             const setupConfigLiteralExpression =
-              tsquery.query<ObjectLiteralExpression>(
+              tsquery.query<ts.ObjectLiteralExpression>(
                 sourceFile,
                 SETUP_CONFIG_ARGS_AST_QUERY,
                 { visitAllChildren: true }
@@ -57,7 +53,7 @@ export const migrateSetupConfig = (tree: Tree, context: SchematicContext) => {
               setupConfigLiteralExpression[0].getFullText();
 
             // We query the IonicModule array literal from the @NgModule imports.
-            const importsArray = tsquery.query<ArrayLiteralExpression>(
+            const importsArray = tsquery.query<ts.ArrayLiteralExpression>(
               sourceFile,
               IONIC_MODULE_AST_QUERY,
               { visitAllChildren: true }
@@ -70,7 +66,7 @@ export const migrateSetupConfig = (tree: Tree, context: SchematicContext) => {
               newContent = tsquery.replace(
                 fileContent,
                 IONIC_MODULE_AST_QUERY,
-                (node: ArrayLiteralExpression) => {
+                (node: ts.ArrayLiteralExpression) => {
                   if (node.getFullText().includes('IonicModule')) {
                     return `${node
                       .getFullText()

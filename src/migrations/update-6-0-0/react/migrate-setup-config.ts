@@ -1,17 +1,6 @@
 import { SchematicContext, Tree } from '@angular-devkit/schematics';
 import { tsquery } from '@phenomnomnominal/tsquery';
-import {
-  createPrinter,
-  createSourceFile,
-  EmitHint,
-  ExpressionStatement,
-  factory,
-  ImportDeclaration,
-  NewLineKind,
-  ObjectLiteralExpression,
-  ScriptKind,
-  ScriptTarget,
-} from 'typescript';
+import ts from 'typescript';
 
 const SETUP_CONFIG_AST_QUERY =
   'ExpressionStatement > CallExpression:has(Identifier[name="setupConfig"])';
@@ -26,18 +15,19 @@ export const migrateSetupConfig = (tree: Tree, context: SchematicContext) => {
       if (fileContent) {
         const sourceFile = tsquery.ast(fileContent);
         // We query the setupConfig() expression statement to see if it exists.
-        const setupConfigExpression = tsquery.query<ExpressionStatement>(
+        const setupConfigExpression = tsquery.query<ts.ExpressionStatement>(
           sourceFile,
           SETUP_CONFIG_AST_QUERY,
           { visitAllChildren: true }
         )[0];
         if (setupConfigExpression) {
           // Then we query the import statement to make sure it is imported from @ionic/core.
-          const setupConfigImportDeclaration = tsquery.query<ImportDeclaration>(
-            sourceFile,
-            IMPORTS_SETUP_CONFIG_AST_QUERY,
-            { visitAllChildren: true }
-          )[0];
+          const setupConfigImportDeclaration =
+            tsquery.query<ts.ImportDeclaration>(
+              sourceFile,
+              IMPORTS_SETUP_CONFIG_AST_QUERY,
+              { visitAllChildren: true }
+            )[0];
           if (
             setupConfigImportDeclaration.moduleSpecifier
               .getText()
@@ -51,36 +41,36 @@ export const migrateSetupConfig = (tree: Tree, context: SchematicContext) => {
             newContent = tsquery.replace(
               newContent,
               SETUP_CONFIG_AST_QUERY,
-              (node: ExpressionStatement) => {
+              (node: ts.ExpressionStatement) => {
                 const setupConfigAst = tsquery.ast(node.getFullText());
                 const setupConfigExpression =
-                  tsquery.query<ObjectLiteralExpression>(
+                  tsquery.query<ts.ObjectLiteralExpression>(
                     setupConfigAst,
                     'CallExpression > ObjectLiteralExpression'
                   )[0];
 
                 const setupIonicConfigExpressionStatement =
-                  factory.createExpressionStatement(
-                    factory.createCallExpression(
-                      factory.createIdentifier('setupIonicConfig'),
+                  ts.factory.createExpressionStatement(
+                    ts.factory.createCallExpression(
+                      ts.factory.createIdentifier('setupIonicConfig'),
                       undefined,
                       [setupConfigExpression]
                     )
                   );
 
-                const resultFile = createSourceFile(
+                const resultFile = ts.createSourceFile(
                   'update.tsx',
                   node.getFullText(),
-                  ScriptTarget.Latest,
+                  ts.ScriptTarget.Latest,
                   true,
-                  ScriptKind.TSX
+                  ts.ScriptKind.TSX
                 );
-                const printer = createPrinter({
-                  newLine: NewLineKind.LineFeed,
+                const printer = ts.createPrinter({
+                  newLine: ts.NewLineKind.LineFeed,
                 });
 
                 const result = printer.printNode(
-                  EmitHint.Unspecified,
+                  ts.EmitHint.Unspecified,
                   setupIonicConfigExpressionStatement,
                   resultFile
                 );
@@ -93,7 +83,7 @@ export const migrateSetupConfig = (tree: Tree, context: SchematicContext) => {
             newContent = tsquery.replace(
               newContent,
               IMPORTS_SETUP_CONFIG_AST_QUERY,
-              (node: ImportDeclaration) => {
+              (node: ts.ImportDeclaration) => {
                 return node
                   .getFullText()
                   .replace(`setupConfig`, `setupIonicConfig`);
