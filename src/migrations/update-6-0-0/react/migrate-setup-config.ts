@@ -51,8 +51,6 @@ export const migrateSetupConfig = (tree: Tree, context: SchematicContext) => {
               return node.getFullText().replace(`setupConfig`, `setupIonicConfig`);
             });
 
-            // Print the output to check our results
-            context.logger.info(newContent);
             tree.overwrite(filePath, newContent);
           }
         }

@@ -1,6 +1,7 @@
 import { SchematicContext, Tree } from "@angular-devkit/schematics";
 import { JsonSchemaForNpmPackageJsonFiles } from "../../../types";
 import { writePackageJson } from "../../../utils/output";
+import { migrateControllerImports } from "./migrate-controller-imports";
 import { migrateSetupConfig } from "./migrate-setup-config";
 import { updatePackageJson } from "./update-package-json";
 
@@ -11,4 +12,5 @@ export default function run(tree: Tree, context: SchematicContext, metadata: {
   writePackageJson(tree, metadata.packageJson);
 
   migrateSetupConfig(tree, context);
+  migrateControllerImports(tree, context);
 }
