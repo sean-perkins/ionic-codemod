@@ -5,6 +5,6 @@ export const updatePackageJson = (
   packageJson: JsonSchemaForNpmPackageJsonFiles
 ) => {
   if (packageJson.dependencies) {
-    updateDependency(packageJson.dependencies, '@ionic/angular', '7.0.0');
+    updateDependency(packageJson.dependencies, '@ionic/angular', '6.0.0');
   }
 };
